@@ -24,7 +24,7 @@ CLEAN_SUBPROJECTS=${CLEAN_SUBPROJECTS_${SUBPROJECTS}}
 
 
 # Project Name
-PROJECTNAME=lab_1.X
+PROJECTNAME=labui.X
 
 # Active Configuration
 DEFAULTCONF=default
