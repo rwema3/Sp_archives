@@ -1,4 +1,4 @@
-# 1 "main_function.c"
+# 1 "checkpoint_2.c"
 # 1 "<built-in>" 1
 # 1 "<built-in>" 3
 # 288 "<built-in>" 3
@@ -6,7 +6,7 @@
 # 1 "<built-in>" 2
 # 1 "C:/Program Files/Microchip/MPLABX/v5.50/packs/Microchip/PIC16Fxxx_DFP/1.2.33/xc8\\pic\\include\\language_support.h" 1 3
 # 2 "<built-in>" 2
-# 1 "main_function.c" 2
+# 1 "checkpoint_2.c" 2
 # 1 "C:/Program Files/Microchip/MPLABX/v5.50/packs/Microchip/PIC16Fxxx_DFP/1.2.33/xc8\\pic\\include\\xc.h" 1 3
 # 18 "C:/Program Files/Microchip/MPLABX/v5.50/packs/Microchip/PIC16Fxxx_DFP/1.2.33/xc8\\pic\\include\\xc.h" 3
 extern const char __xc8_OPTIM_SPEED;
@@ -1819,7 +1819,7 @@ extern __bank0 unsigned char __resetbits;
 extern __bank0 __bit __powerdown;
 extern __bank0 __bit __timeout;
 # 28 "C:/Program Files/Microchip/MPLABX/v5.50/packs/Microchip/PIC16Fxxx_DFP/1.2.33/xc8\\pic\\include\\xc.h" 2 3
-# 1 "main_function.c" 2
+# 1 "checkpoint_2.c" 2
 
 
 
@@ -1830,7 +1830,8 @@ void initializePorts(void) {
     TRISC = 0x00;
     TRISD = 0x00;
     TRISE = 0x00;
-    TRISA = 0x00;
+    TRISA = 0x10;
+    OPTION_REGbits.nRBPU = 0;
 }
 
 
@@ -1843,6 +1844,11 @@ void turnOffAllLEDs(char *port) {
     *port = 0x00;
 }
 
+
+int isButtonPressed(void) {
+    return (PORTA & 0x10) == 0;
+}
+
 void main(void) {
     char *portB = &PORTB;
     char *portC = &PORTC;
@@ -1853,18 +1859,17 @@ void main(void) {
     initializePorts();
 
     while(1) {
-        turnOnAllLEDs(portB);
-        turnOnAllLEDs(portC);
-        turnOnAllLEDs(portD);
-        turnOnAllLEDs(portE);
-        turnOnAllLEDs(portA);
-        _delay((unsigned long)((100)*(20000000/4000.0)));
-
-        turnOffAllLEDs(portB);
-        turnOffAllLEDs(portC);
-        turnOffAllLEDs(portD);
-        turnOffAllLEDs(portE);
-        turnOffAllLEDs(portA);
-        _delay((unsigned long)((200)*(20000000/4000.0)));
+        if (isButtonPressed()) {
+            turnOnAllLEDs(portB);
+            turnOnAllLEDs(portC);
+            turnOnAllLEDs(portD);
+            turnOnAllLEDs(portE);
+            _delay((unsigned long)((500)*(20000000/4000.0)));
+        } else {
+            turnOffAllLEDs(portB);
+            turnOffAllLEDs(portC);
+            turnOffAllLEDs(portD);
+            turnOffAllLEDs(portE);
+        }
     }
 }
