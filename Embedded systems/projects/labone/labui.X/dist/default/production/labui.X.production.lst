@@ -1,7 +1,7 @@
 
 
 Microchip MPLAB XC8 Assembler V2.46 build 20240104201356 
-                                                                                               Sun Jan 28 12:08:27 2024
+                                                                                               Mon Jan 29 18:47:44 2024
 
 Microchip MPLAB XC8 C Compiler v2.46 (Free license) build 20240104201356 Og1 
      1                           	processor	16F877A
@@ -399,12 +399,12 @@ Microchip MPLAB XC8 C Compiler v2.46 (Free license) build 20240104201356 Og1
    385     07A2  120A  118A  274D  120A  118A  	fcall	_turnOnAllLEDs
    386     07A7                     l637:
    387                           
-   388                           ;main_function.c: 39:         _delay((unsigned long)((100)*(20000000/4000.0)));
-   389     07A7  3003               	movlw	3
+   388                           ;main_function.c: 39:         _delay((unsigned long)((500)*(20000000/4000.0)));
+   389     07A7  300D               	movlw	13
    390     07A8  00F4               	movwf	??_main+2
-   391     07A9  308A               	movlw	138
+   391     07A9  30AF               	movlw	175
    392     07AA  00F3               	movwf	??_main+1
-   393     07AB  3055               	movlw	85
+   393     07AB  30B6               	movlw	182
    394     07AC  00F2               	movwf	??_main
    395     07AD                     u17:
    396     07AD  0BF2               	decfsz	??_main,f
@@ -413,7 +413,7 @@ Microchip MPLAB XC8 C Compiler v2.46 (Free license) build 20240104201356 Og1
    399     07B0  2FAD               	goto	u17
    400     07B1  0BF4               	decfsz	??_main+2,f
    401     07B2  2FAD               	goto	u17
-   402     07B3  2FB4               	nop2
+   402     07B3  0000               	nop
    403     07B4                     l639:
    404                           
    405                           ;main_function.c: 41:         turnOffAllLEDs(portB);
@@ -466,12 +466,12 @@ Microchip MPLAB XC8 C Compiler v2.46 (Free license) build 20240104201356 Og1
    452     07E6  120A  118A  273E  120A  118A  	fcall	_turnOffAllLEDs
    453     07EB                     l649:
    454                           
-   455                           ;main_function.c: 46:         _delay((unsigned long)((200)*(20000000/4000.0)));
-   456     07EB  3006               	movlw	6
+   455                           ;main_function.c: 46:         _delay((unsigned long)((100)*(20000000/4000.0)));
+   456     07EB  3003               	movlw	3
    457     07EC  00F4               	movwf	??_main+2
-   458     07ED  3013               	movlw	19
+   458     07ED  308A               	movlw	138
    459     07EE  00F3               	movwf	??_main+1
-   460     07EF  30AD               	movlw	173
+   460     07EF  3055               	movlw	85
    461     07F0  00F2               	movwf	??_main
    462     07F1                     u27:
    463     07F1  0BF2               	decfsz	??_main,f
@@ -773,7 +773,7 @@ DATA                 0      0       0      12        0.0%
 
 
 Microchip Technology PIC Macro Assembler V2.46 build 20240104201356 
-Symbol Table                                                                                   Sun Jan 28 12:08:27 2024
+Symbol Table                                                                                   Mon Jan 29 18:47:44 2024
 
                      l31 0744                       l25 074C                       l28 0754  
                      u17 07AD                       u27 07F1                      l621 073E  

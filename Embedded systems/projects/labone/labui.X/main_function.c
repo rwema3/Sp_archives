@@ -36,13 +36,13 @@ void main(void) {
         turnOnAllLEDs(portD);
         turnOnAllLEDs(portE);
         turnOnAllLEDs(portA);
-        __delay_ms(100); // Reduced delay to 100ms
+        __delay_ms(500); 
         
         turnOffAllLEDs(portB);
         turnOffAllLEDs(portC);
         turnOffAllLEDs(portD);
         turnOffAllLEDs(portE);
         turnOffAllLEDs(portA);
-        __delay_ms(200); // Reduced delay to 100ms
+        __delay_ms(100); // Delay of 500ms
     }
 }

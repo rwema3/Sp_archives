@@ -1858,13 +1858,13 @@ void main(void) {
         turnOnAllLEDs(portD);
         turnOnAllLEDs(portE);
         turnOnAllLEDs(portA);
-        _delay((unsigned long)((100)*(20000000/4000.0)));
+        _delay((unsigned long)((500)*(20000000/4000.0)));
 
         turnOffAllLEDs(portB);
         turnOffAllLEDs(portC);
         turnOffAllLEDs(portD);
         turnOffAllLEDs(portE);
         turnOffAllLEDs(portA);
-        _delay((unsigned long)((200)*(20000000/4000.0)));
+        _delay((unsigned long)((100)*(20000000/4000.0)));
     }
 }
