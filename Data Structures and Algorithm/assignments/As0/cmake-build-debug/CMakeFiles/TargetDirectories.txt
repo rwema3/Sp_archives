@@ -1,0 +1,4 @@
+D:/WorksGt/Spring-semester-2024/Data Structures and Algorithm/assignments/As0/cmake-build-debug/CMakeFiles/As0.dir
+D:/WorksGt/Spring-semester-2024/Data Structures and Algorithm/assignments/As0/cmake-build-debug/CMakeFiles/main.dir
+D:/WorksGt/Spring-semester-2024/Data Structures and Algorithm/assignments/As0/cmake-build-debug/CMakeFiles/edit_cache.dir
+D:/WorksGt/Spring-semester-2024/Data Structures and Algorithm/assignments/As0/cmake-build-debug/CMakeFiles/rebuild_cache.dir
