@@ -8,7 +8,6 @@ struct FixationPoint {
     int y;
 };
 
-// Function to process fixation points and return the number of distinct points
 int processFixationPoints(std::ifstream& inputFile, FixationPoint fixationPoints[]) {
     int count = 0;
     int fixationId, x, y;
@@ -16,7 +15,7 @@ int processFixationPoints(std::ifstream& inputFile, FixationPoint fixationPoints
     inputFile >> fixationId >> x >> y;
 
     while (x != -1 || y != -1) {
-        // Check if the point is distinct
+        
         bool isDistinct = true;
         for (int i = 0; i < count; ++i) {
             if (fixationPoints[i].x == x && fixationPoints[i].y == y) {
