@@ -1,6 +1,5 @@
 #include <iostream>
 #include <fstream>
-#include <utility>
 
 struct FixationPoint {
     int id;
@@ -15,7 +14,6 @@ int processFixationPoints(std::ifstream& inputFile, FixationPoint fixationPoints
     inputFile >> fixationId >> x >> y;
 
     while (x != -1 || y != -1) {
-        
         bool isDistinct = true;
         for (int i = 0; i < count; ++i) {
             if (fixationPoints[i].x == x && fixationPoints[i].y == y) {
@@ -25,7 +23,10 @@ int processFixationPoints(std::ifstream& inputFile, FixationPoint fixationPoints
         }
 
         if (isDistinct) {
-            fixationPoints[count++] = {count, x, y};
+            fixationPoints[count].id = count + 1;
+            fixationPoints[count].x = x;
+            fixationPoints[count].y = y;
+            count++;
         }
 
         inputFile >> fixationId >> x >> y;
@@ -34,7 +35,6 @@ int processFixationPoints(std::ifstream& inputFile, FixationPoint fixationPoints
     return count;
 }
 
-// Function to write distinct fixation points to the output file
 void writeDistinctFixationPoints(std::ofstream& outputFile, const FixationPoint fixationPoints[], int count) {
     for (int i = 0; i < count; ++i) {
         outputFile << fixationPoints[i].id << " " << fixationPoints[i].x << " " << fixationPoints[i].y << std::endl;
@@ -42,14 +42,12 @@ void writeDistinctFixationPoints(std::ofstream& outputFile, const FixationPoint 
 }
 
 int main() {
-    // Open input file
     std::ifstream inputFile("data/input.txt");
     if (!inputFile.is_open()) {
         std::cerr << "Error opening input.txt" << std::endl;
         return 1;
     }
 
-    // Open output file
     std::ofstream outputFile("data/output.txt");
     if (!outputFile.is_open()) {
         std::cerr << "Error opening output.txt" << std::endl;
@@ -57,26 +55,19 @@ int main() {
         return 1;
     }
 
-    // Output the Andrew ID
     outputFile << "bdominiq" << std::endl;
 
     int numTestCases;
     inputFile >> numTestCases;
 
     for (int testCase = 0; testCase < numTestCases; ++testCase) {
-        // Process fixation points for the current test case
-        const int maxSize = 100; // Adjust the size based on your requirements
+        const int maxSize = 100;
         FixationPoint fixationPoints[maxSize];
         int count = processFixationPoints(inputFile, fixationPoints);
-
-        // Output the distinct fixation points for the current test case
         writeDistinctFixationPoints(outputFile, fixationPoints, count);
-
-        // Output the line of dashes to separate test cases
         outputFile << "**********" << std::endl;
     }
 
-    // Close files
     inputFile.close();
     outputFile.close();
 
