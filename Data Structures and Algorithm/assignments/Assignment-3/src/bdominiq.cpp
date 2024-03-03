@@ -92,8 +92,8 @@ string extractWord(const string& str) {
 
 int main() {
     vector<string> filenames;
-    ifstream inputFile("input.txt");
-    ofstream outputFile("output.txt");
+    ifstream inputFile("../data/input.txt");
+    ofstream outputFile("../data/output.txt");
 
     if (!inputFile.is_open()) {
         cerr << "Error: Unable to open input file." << endl;
@@ -111,7 +111,7 @@ int main() {
     for (size_t i = 0; i < filenames.size(); ++i) {
         ifstream file(filenames[i]);
         if (!file.is_open()) {
-            cerr << "Error: Unable to open file " << filenames[i] << endl;
+            cerr << "Error: Unable to open to " << filenames[i] << endl;
             continue;
         }
 
