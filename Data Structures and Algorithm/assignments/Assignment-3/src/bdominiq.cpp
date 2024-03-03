@@ -32,22 +32,13 @@ private:
         }
     }
 
-    void traverseInOrder(TreeNode* node, std::ofstream& outputFile) {
+    void traverseInOrder(TreeNode* node, std::ofstream& outputFile, int& totalProbes, int& maxProbes, int currentProbe) {
         if (node == nullptr) return;
-        traverseInOrder(node->left, outputFile);
-        outputFile << node->word << " " << node->count << " (" << node->count - 1 << ")" << std::endl;
-        traverseInOrder(node->right, outputFile);
-    }
-
-    int calculateProbes(TreeNode* node, const std::string& word, int probes) {
-        if (node == nullptr) return probes;
-        if (word < node->word) {
-            return calculateProbes(node->left, word, probes + 1);
-        } else if (word > node->word) {
-            return calculateProbes(node->right, word, probes + 1);
-        } else {
-            return probes + 1;
-        }
+        traverseInOrder(node->left, outputFile, totalProbes, maxProbes, currentProbe + 1);
+        outputFile << node->word << " " << node->count << " (" << currentProbe << ")" << std::endl;
+        totalProbes += currentProbe;
+        maxProbes = std::max(maxProbes, currentProbe);
+        traverseInOrder(node->right, outputFile, totalProbes, maxProbes, currentProbe + 1);
     }
 
 public:
@@ -57,14 +48,9 @@ public:
         insertWord(root, word);
     }
 
-    void traverseAndWrite(std::ofstream& outputFile) {
-        traverseInOrder(root, outputFile);
-    }
-
-    void calculateProbeStats(const std::string& word, int& totalProbes, int& maxProbes) {
-        int probes = calculateProbes(root, word, 0);
-        totalProbes += probes;
-        maxProbes = std::max(maxProbes, probes);
+    void traverseAndWrite(std::ofstream& outputFile, int& totalProbes, int& maxProbes) {
+        int currentProbe = 0;
+        traverseInOrder(root, outputFile, totalProbes, maxProbes, currentProbe);
     }
 
     void clear() {
@@ -123,13 +109,24 @@ int main() {
         std::string line;
         int totalProbes = 0;
         int maxProbes = 0;
-        int wordCount = 0;
 
         while (std::getline(inFile, line)) {
             extractWords(line, bst);
         }
 
-        bst.traverseAndWrite(outputFile);
+        bst.traverseAndWrite(outputFile, totalProbes, maxProbes);
+
+        int wordCount = 0; // Count the number of words for average probe calculation
+        inFile.clear();
+        inFile.seekg(0); // Reset file stream for word counting
+
+        while (std::getline(inFile, line)) {
+            std::istringstream iss(line);
+            std::string word;
+            while (iss >> word) {
+                wordCount++;
+            }
+        }
 
         outputFile << "Maximum number of probes: " << maxProbes << std::endl;
         outputFile << "Average number of probes: " << (wordCount > 0 ? static_cast<double>(totalProbes) / wordCount : 0) << std::endl;
