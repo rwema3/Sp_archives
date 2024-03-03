@@ -1,145 +1,143 @@
 #include <iostream>
 #include <fstream>
-#include <string>
+#include <sstream>
 #include <cctype>
 #include <unordered_map>
-#include <algorithm>
-#include <iomanip>
+#include <string>
 #include <vector>
-
-using namespace std;
+#include <algorithm>
 
 struct TreeNode {
-    string word;
+    std::string word;
     int count;
     TreeNode* left;
     TreeNode* right;
-    TreeNode(string w) : word(w), count(1), left(nullptr), right(nullptr) {}
+
+    TreeNode(const std::string& w) : word(w), count(1), left(nullptr), right(nullptr) {}
 };
 
 class BST {
 private:
     TreeNode* root;
 
-    void insert(TreeNode*& node, const string& word) {
+    void insertWord(TreeNode*& node, const std::string& word) {
         if (node == nullptr) {
             node = new TreeNode(word);
         } else if (word < node->word) {
-            insert(node->left, word);
+            insertWord(node->left, word);
         } else if (word > node->word) {
-            insert(node->right, word);
+            insertWord(node->right, word);
         } else {
             node->count++;
         }
     }
 
-    void traverse(TreeNode* node, ofstream& outFile, int& totalProbes, int currentProbes) {
+    void traverseInOrder(TreeNode* node, std::ofstream& outputFile) {
         if (node == nullptr) return;
-        traverse(node->left, outFile, totalProbes, currentProbes + 1);
-        outFile << node->word << " " << node->count << " (" << currentProbes << ")" << endl;
-        totalProbes += currentProbes;
-        traverse(node->right, outFile, totalProbes, currentProbes + 1);
+        traverseInOrder(node->left, outputFile);
+        outputFile << node->word << " " << node->count << " (" << node->count - 1 << ")" << std::endl;
+        traverseInOrder(node->right, outputFile);
     }
 
-    int maxDepth(TreeNode* node) {
-        if (node == nullptr) return 0;
-        int leftDepth = maxDepth(node->left);
-        int rightDepth = maxDepth(node->right);
-        return 1 + max(leftDepth, rightDepth);
+    int calculateProbes(TreeNode* node, const std::string& word, int probes) {
+        if (node == nullptr) return probes;
+        if (word < node->word) {
+            return calculateProbes(node->left, word, probes + 1);
+        } else if (word > node->word) {
+            return calculateProbes(node->right, word, probes + 1);
+        } else {
+            return probes + 1;
+        }
     }
 
 public:
     BST() : root(nullptr) {}
 
-    void insert(const string& word) {
-        string lowercase_word = word;
-        transform(lowercase_word.begin(), lowercase_word.end(), lowercase_word.begin(), ::tolower);
-        insert(root, lowercase_word);
+    void insert(const std::string& word) {
+        insertWord(root, word);
     }
 
-    void writeToFile(ofstream& outFile, const string& filename) const {
-        outFile << filename << endl;
-        int totalProbes = 0;
-        int totalWords = 0;
-        traverse(root, outFile, totalProbes, 0);
-        totalWords = totalCount();
-        outFile << "Maximum number of probes: " << maxDepth(root) << endl;
-        outFile << "Average number of probes: " << fixed << setprecision(1) << (double)totalProbes / totalWords << endl;
-        outFile << "--------------------" << endl;
+    void traverseAndWrite(std::ofstream& outputFile) {
+        traverseInOrder(root, outputFile);
     }
 
-    int totalCount() const {
-        return totalCount(root);
+    void calculateProbeStats(const std::string& word, int& totalProbes, int& maxProbes) {
+        int probes = calculateProbes(root, word, 0);
+        totalProbes += probes;
+        maxProbes = std::max(maxProbes, probes);
     }
 
-    int totalCount(TreeNode* node) const {
-        if (node == nullptr) return 0;
-        return node->count + totalCount(node->left) + totalCount(node->right);
+    void clear() {
+        clear(root);
+    }
+
+    ~BST() {
+        clear();
+    }
+
+private:
+    void clear(TreeNode* node) {
+        if (node == nullptr) return;
+        clear(node->left);
+        clear(node->right);
+        delete node;
     }
 };
 
-string extractWord(const string& str) {
-    string word;
-    for (char c : str) {
-        if (isalnum(c) || (c == '-' && !word.empty())) {
-            word += tolower(c);
-        } else {
-            break;
+void extractWords(const std::string& line, BST& bst) {
+    std::istringstream iss(line);
+    std::string word;
+    while (iss >> word) {
+        std::string sanitizedWord;
+        for (char c : word) {
+            if (std::isalnum(c) || c == '-') {
+                sanitizedWord += std::tolower(c);
+            }
+        }
+        if (!sanitizedWord.empty()) {
+            bst.insert(sanitizedWord);
         }
     }
-    return word;
 }
 
 int main() {
-    vector<string> filenames;
-    ifstream inputFile("../data/input.txt");
-    ofstream outputFile("../data/output.txt");
-
-    if (!inputFile.is_open()) {
-        cerr << "Error: Unable to open input file." << endl;
+    std::ofstream outputFile("output.txt");
+    if (!outputFile.is_open()) {
+        std::cerr << "Error opening output.txt" << std::endl;
         return 1;
     }
 
-    string line;
-    while (getline(inputFile, line)) {
-        if (line.empty()) continue;
-        filenames.push_back(line);
-    }
+    std::vector<std::string> inputFiles = {"../data/textfile1.txt", "../data/textfile2.txt"};
 
-    unordered_map<string, BST> fileWords;
-
-    for (size_t i = 0; i < filenames.size(); ++i) {
-        ifstream file(filenames[i]);
-        if (!file.is_open()) {
-            cerr << "Error: Unable to open to " << filenames[i] << endl;
+    for (const std::string& inputFile : inputFiles) {
+        std::ifstream inFile(inputFile);
+        if (!inFile.is_open()) {
+            std::cerr << "Error opening " << inputFile << std::endl;
             continue;
         }
 
-        string word;
-        while (file >> word) {
-            string cleaned_word;
-            for (char c : word) {
-                if (isalnum(c) || (c == '-' && !cleaned_word.empty())) {
-                    cleaned_word += tolower(c);
-                } else {
-                    break;
-                }
-            }
-            if (!cleaned_word.empty()) {
-                fileWords[filenames[i]].insert(cleaned_word);
-            }
+        outputFile << "bdominiq" << std::endl;
+        outputFile << inputFile << std::endl;
+
+        BST bst;
+        std::string line;
+        int totalProbes = 0;
+        int maxProbes = 0;
+        int wordCount = 0;
+
+        while (std::getline(inFile, line)) {
+            extractWords(line, bst);
         }
-        file.close();
+
+        bst.traverseAndWrite(outputFile);
+
+        outputFile << "Maximum number of probes: " << maxProbes << std::endl;
+        outputFile << "Average number of probes: " << (wordCount > 0 ? static_cast<double>(totalProbes) / wordCount : 0) << std::endl;
+        outputFile << "--------------------" << std::endl;
+
+        inFile.close();
     }
 
-    for (const auto& entry : fileWords) {
-        entry.second.writeToFile(outputFile, entry.first);
-    }
-
-    inputFile.close();
     outputFile.close();
-
-    cout << "Output has been written to output.txt." << endl;
-
     return 0;
 }
