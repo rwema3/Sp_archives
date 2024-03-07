@@ -1,11 +1,5 @@
 #include <iostream>
 #include <fstream>
-#include <sstream>
-#include <cctype>
-#include <unordered_map>
-#include <string>
-#include <vector>
-#include <algorithm>
 
 struct TreeNode {
     std::string word;
@@ -19,20 +13,7 @@ struct TreeNode {
 class BST {
 private:
     TreeNode* root;
-    int uniqueWordCount; // Add a member to keep track of the number of unique words
-
-    void insertWord(TreeNode*& node, const std::string& word) {
-        if (node == nullptr) {
-            node = new TreeNode(word);
-            uniqueWordCount++; // Increment unique word count when a new word is inserted
-        } else if (word < node->word) {
-            insertWord(node->left, word);
-        } else if (word > node->word) {
-            insertWord(node->right, word);
-        } else {
-            node->count++;
-        }
-    }
+    int uniqueWordCount; // To track the number of unique words
 
     void traverseInOrder(TreeNode* node, std::ofstream& outputFile, int& totalProbes, int& maxProbes, int currentProbe) {
         if (node == nullptr) return;
@@ -47,15 +28,26 @@ public:
     BST() : root(nullptr), uniqueWordCount(0) {}
 
     void insert(const std::string& word) {
-        insertWord(root, word);
+        TreeNode** current = &root;
+        while (*current != nullptr) {
+            if (word < (*current)->word) {
+                current = &((*current)->left);
+            } else if (word > (*current)->word) {
+                current = &((*current)->right);
+            } else {
+                (*current)->count++;
+                return;
+            }
+        }
+        *current = new TreeNode(word);
+        uniqueWordCount++;
     }
 
     void traverseAndWrite(std::ofstream& outputFile, int& totalProbes, int& maxProbes) {
-        int currentProbe = 0;
+        int currentProbe = 1; // Start counting from 1 instead of 0
         traverseInOrder(root, outputFile, totalProbes, maxProbes, currentProbe);
     }
 
-    // Provide a method to get the count of unique words
     int getUniqueWordCount() const {
         return uniqueWordCount;
     }
@@ -77,22 +69,6 @@ private:
     }
 };
 
-void extractWords(const std::string& line, BST& bst) {
-    std::istringstream iss(line);
-    std::string word;
-    while (iss >> word) {
-        std::string sanitizedWord;
-        for (char c : word) {
-            if (std::isalnum(c) || c == '-') {
-                sanitizedWord += std::tolower(c);
-            }
-        }
-        if (!sanitizedWord.empty()) {
-            bst.insert(sanitizedWord);
-        }
-    }
-}
-
 int main() {
     std::ofstream outputFile("output.txt");
     if (!outputFile.is_open()) {
@@ -100,17 +76,20 @@ int main() {
         return 1;
     }
 
-    std::vector<std::string> inputFiles = {"../data/textfile1.txt", "../data/textfile2.txt"};
+    // Assuming data/textfile1.txt and data/textfile2.txt exist in the current directory
+    const char* inputFiles[] = {"../data/textfile1.txt", "../data/textfile2.txt"};
+    const int numFiles = 2;
 
-    for (const std::string& inputFile : inputFiles) {
-        std::ifstream inFile(inputFile);
+    outputFile << "bdominiq" << std::endl;
+
+    for (int i = 0; i < numFiles; ++i) {
+        std::ifstream inFile(inputFiles[i]);
         if (!inFile.is_open()) {
-            std::cerr << "Error opening " << inputFile << std::endl;
+            std::cerr << "Error opening " << inputFiles[i] << std::endl;
             continue;
         }
 
-        outputFile << "bdominiq" << std::endl;
-        outputFile << inputFile << std::endl;
+        outputFile << inputFiles[i] << std::endl;
 
         BST bst;
         std::string line;
@@ -118,14 +97,29 @@ int main() {
         int maxProbes = 0;
 
         while (std::getline(inFile, line)) {
-            extractWords(line, bst);
+            std::string word;
+            int start = 0;
+            for (int i = 0; i <= line.size(); ++i) {
+                if (i == line.size() || !std::isalnum(line[i]) || line[i] == '-') {
+                    if (i > start) {
+                        std::string sanitizedWord = line.substr(start, i - start);
+                        for (char& c : sanitizedWord) {
+                            c = std::tolower(c);
+                        }
+                        if (!sanitizedWord.empty()) {
+                            bst.insert(sanitizedWord);
+                        }
+                    }
+                    start = i + 1;
+                }
+            }
         }
+
+        outputFile << "Maximum number of probes: " << maxProbes << std::endl;
+        outputFile << "Average number of probes: " << (bst.getUniqueWordCount() > 0 ? static_cast<double>(totalProbes) / bst.getUniqueWordCount() : 0) << std::endl;
 
         bst.traverseAndWrite(outputFile, totalProbes, maxProbes);
 
-        // Use the unique word count for the average calculation instead of total word count
-        outputFile << "Maximum number of probes: " << maxProbes << std::endl;
-        outputFile << "Average number of probes: " << (bst.getUniqueWordCount() > 0 ? static_cast<double>(totalProbes) / bst.getUniqueWordCount() : 0) << std::endl;
         outputFile << "--------------------" << std::endl;
 
         inFile.close();
