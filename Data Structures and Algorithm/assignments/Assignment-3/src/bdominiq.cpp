@@ -19,10 +19,12 @@ struct TreeNode {
 class BST {
 private:
     TreeNode* root;
+    int uniqueWordCount; // Add a member to keep track of the number of unique words
 
     void insertWord(TreeNode*& node, const std::string& word) {
         if (node == nullptr) {
             node = new TreeNode(word);
+            uniqueWordCount++; // Increment unique word count when a new word is inserted
         } else if (word < node->word) {
             insertWord(node->left, word);
         } else if (word > node->word) {
@@ -42,7 +44,7 @@ private:
     }
 
 public:
-    BST() : root(nullptr) {}
+    BST() : root(nullptr), uniqueWordCount(0) {}
 
     void insert(const std::string& word) {
         insertWord(root, word);
@@ -51,6 +53,11 @@ public:
     void traverseAndWrite(std::ofstream& outputFile, int& totalProbes, int& maxProbes) {
         int currentProbe = 0;
         traverseInOrder(root, outputFile, totalProbes, maxProbes, currentProbe);
+    }
+
+    // Provide a method to get the count of unique words
+    int getUniqueWordCount() const {
+        return uniqueWordCount;
     }
 
     void clear() {
@@ -116,20 +123,9 @@ int main() {
 
         bst.traverseAndWrite(outputFile, totalProbes, maxProbes);
 
-        int wordCount = 0; // Count the number of words for average probe calculation
-        inFile.clear();
-        inFile.seekg(0); // Reset file stream for word counting
-
-        while (std::getline(inFile, line)) {
-            std::istringstream iss(line);
-            std::string word;
-            while (iss >> word) {
-                wordCount++;
-            }
-        }
-
+        // Use the unique word count for the average calculation instead of total word count
         outputFile << "Maximum number of probes: " << maxProbes << std::endl;
-        outputFile << "Average number of probes: " << (wordCount > 0 ? static_cast<double>(totalProbes) / wordCount : 0) << std::endl;
+        outputFile << "Average number of probes: " << (bst.getUniqueWordCount() > 0 ? static_cast<double>(totalProbes) / bst.getUniqueWordCount() : 0) << std::endl;
         outputFile << "--------------------" << std::endl;
 
         inFile.close();
