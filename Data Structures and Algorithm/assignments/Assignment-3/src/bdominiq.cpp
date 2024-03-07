@@ -77,8 +77,8 @@ int main() {
     }
 
     // Assuming data/textfile1.txt and data/textfile2.txt exist in the current directory
-    const char* inputFiles[] = {"../data/textfile1.txt", "../data/textfile2.txt", "../data/textfile3.txt"};
-    const int numFiles = 3;
+    const char* inputFiles[] = {"../data/textfile1.txt", "../data/textfile2.txt"};
+    const int numFiles = 2;
 
     outputFile << "bdominiq" << std::endl;
 
