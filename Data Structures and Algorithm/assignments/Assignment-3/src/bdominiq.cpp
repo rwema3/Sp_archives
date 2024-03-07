@@ -115,10 +115,10 @@ int main() {
             }
         }
 
+        bst.traverseAndWrite(outputFile, totalProbes, maxProbes);
+
         outputFile << "Maximum number of probes: " << maxProbes << std::endl;
         outputFile << "Average number of probes: " << (bst.getUniqueWordCount() > 0 ? static_cast<double>(totalProbes) / bst.getUniqueWordCount() : 0) << std::endl;
-
-        bst.traverseAndWrite(outputFile, totalProbes, maxProbes);
 
         outputFile << "--------------------" << std::endl;
 
