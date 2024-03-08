@@ -1,3 +1,46 @@
+/*
+AUTHOR: Bagirishya Rwema Dominique
+ andrewID: bdominiq
+
+Functionality of the program:
+
+program is designed to analyze text files and gather statistics on word occurrences. It implements a Binary Search Tree (BST) data structure to efficiently store words
+and their frequencies. Initially, it opens multiple text files, tokenizes each line into words, and inserts them into the BST. During insertion, the program keeps track
+of the frequency of each word. After processing all files, it calculates statistics such as the maximum and average number of probes required to insert words into the
+BST, which provides insights into the efficiency of the BST implementation. Finally, it writes the results, including word frequencies and probe counts, to an output
+file for further analysis.
+
+Format of the I/O:
+
+The input format of the program consists of multiple text files containing words and sentences. Each file is processed line by line, and words are tokenized using
+delimiters such as spaces, commas, periods, and hyphens. The output format includes an output file named "output.txt", where the program writes the results of its
+analysis. For each input file, it reports the file name, the maximum number of probes required for BST insertion, the average number of probes per unique word, and
+a list of words along with their frequencies and the number of probes required for insertion. Each input file's results are separated by a line of dashes for clarity.
+
+
+Solution:
+
+The program uses a Binary Search Tree (BST) to organize words and their frequencies efficiently. For computing the level, maximum, and average number of probes,
+it employs recursive traversal of the BST during insertion. The level of each insertion indicates the depth of the node, facilitating calculation of the average probes.
+The maximum number of probes updates during each insertion, capturing the longest path from the root to a leaf. Accumulating total probes during insertion enables
+computation of the average probes across all unique words, ensuring accurate statistical analysis of word occurrences within the given text files.
+
+Summary of Testing:
+
+The code was tested by providing various text files containing different types of words and sentences, including cases with repetitive words, varying word lengths, and
+different delimiters. Additionally, test cases with empty files and non-existent files were included to ensure proper error handling. The program's functionality was
+verified by comparing the output statistics, including maximum and average number of probes, against expected results obtained manually from the test files. This
+comprehensive testing approach aimed to validate the program's ability to accurately analyze word occurrences across diverse input scenarios.
+
+BIG O:
+
+My algorithm utilizes a binary search tree (BST) to process multiple text files, tokenize words, and count their occurrences. Insertion into the BST occurs during
+tokenization, leading to a worst-case time complexity of O(n log n) for n total words across all files. This complexity arises from the balanced nature of the BST,
+ensuring logarithmic insertion times on average. I chose this because it maintains sorted order, enabling efficient search operations (O(log n)), crucial for insertion
+and retrieval tasks in text processing.
+
+*/
+
 #include <iostream>
 #include <fstream>
 
@@ -69,11 +112,11 @@ public:
     void calculateStats(int& totalProbes, int& maxProbes) {
         totalProbes = 0;
         maxProbes = 0;
-        calculateProbes(root, totalProbes, maxProbes, 1); // Start from 1
+        calculateProbes(root, totalProbes, maxProbes, 1);
     }
 
     void traverseAndWrite(std::ofstream& outputFile) {
-        writeTraverseInOrder(root, outputFile, 1); // Start from 1
+        writeTraverseInOrder(root, outputFile, 1); 
     }
 
     int getUniqueWordCount() const {
