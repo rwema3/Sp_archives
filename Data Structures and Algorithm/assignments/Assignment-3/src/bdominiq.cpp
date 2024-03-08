@@ -1,5 +1,7 @@
 #include <iostream>
 #include <fstream>
+#include <string>
+#include <algorithm>
 
 struct TreeNode {
     std::string word;
@@ -13,15 +15,21 @@ struct TreeNode {
 class BST {
 private:
     TreeNode* root;
-    int uniqueWordCount; // To track the number of unique words
+    int uniqueWordCount; 
 
-    void traverseInOrder(TreeNode* node, std::ofstream& outputFile, int& totalProbes, int& maxProbes, int currentProbe) {
+    void calculateProbes(TreeNode* node, int& totalProbes, int& maxProbes, int currentProbe) {
         if (node == nullptr) return;
-        traverseInOrder(node->left, outputFile, totalProbes, maxProbes, currentProbe + 1);
-        outputFile << node->word << " " << node->count << " (" << currentProbe << ")" << std::endl;
+        calculateProbes(node->left, totalProbes, maxProbes, currentProbe + 1);
         totalProbes += currentProbe;
         maxProbes = std::max(maxProbes, currentProbe);
-        traverseInOrder(node->right, outputFile, totalProbes, maxProbes, currentProbe + 1);
+        calculateProbes(node->right, totalProbes, maxProbes, currentProbe + 1);
+    }
+
+    void writeTraverseInOrder(TreeNode* node, std::ofstream& outputFile, int currentProbe) {
+        if (node == nullptr) return;
+        writeTraverseInOrder(node->left, outputFile, currentProbe + 1);
+        outputFile << node->word << " " << node->count << " (" << currentProbe << ")" << std::endl;
+        writeTraverseInOrder(node->right, outputFile, currentProbe + 1);
     }
 
 public:
@@ -43,9 +51,14 @@ public:
         uniqueWordCount++;
     }
 
-    void traverseAndWrite(std::ofstream& outputFile, int& totalProbes, int& maxProbes) {
-        int currentProbe = 1; // Start counting from 1 instead of 0
-        traverseInOrder(root, outputFile, totalProbes, maxProbes, currentProbe);
+    void calculateStats(int& totalProbes, int& maxProbes) {
+        totalProbes = 0;
+        maxProbes = 0;
+        calculateProbes(root, totalProbes, maxProbes, 1); // Start from 1
+    }
+
+    void traverseAndWrite(std::ofstream& outputFile) {
+        writeTraverseInOrder(root, outputFile, 1); // Start from 1
     }
 
     int getUniqueWordCount() const {
@@ -76,7 +89,6 @@ int main() {
         return 1;
     }
 
-    // Assuming data/textfile1.txt and data/textfile2.txt exist in the current directory
     const char* inputFiles[] = {"../data/textfile1.txt", "../data/textfile2.txt"};
     const int numFiles = 2;
 
@@ -89,36 +101,33 @@ int main() {
             continue;
         }
 
-        outputFile << inputFiles[i] << std::endl;
-
         BST bst;
         std::string line;
-        int totalProbes = 0;
-        int maxProbes = 0;
-
         while (std::getline(inFile, line)) {
             std::string word;
             int start = 0;
             for (int i = 0; i <= line.size(); ++i) {
-                if (i == line.size() || !std::isalnum(line[i]) || line[i] == '-') {
+                if (i == line.size() || !std::isalnum(line[i])) {
                     if (i > start) {
-                        std::string sanitizedWord = line.substr(start, i - start);
-                        for (char& c : sanitizedWord) {
+                        word = line.substr(start, i - start);
+                        for (char& c : word) {
                             c = std::tolower(c);
                         }
-                        if (!sanitizedWord.empty()) {
-                            bst.insert(sanitizedWord);
-                        }
+                        bst.insert(word);
                     }
                     start = i + 1;
                 }
             }
         }
 
-        bst.traverseAndWrite(outputFile, totalProbes, maxProbes);
+        int totalProbes = 0, maxProbes = 0;
+        bst.calculateStats(totalProbes, maxProbes);
 
+        outputFile << inputFiles[i] << std::endl;
         outputFile << "Maximum number of probes: " << maxProbes << std::endl;
         outputFile << "Average number of probes: " << (bst.getUniqueWordCount() > 0 ? static_cast<double>(totalProbes) / bst.getUniqueWordCount() : 0) << std::endl;
+
+        bst.traverseAndWrite(outputFile);
 
         outputFile << "--------------------" << std::endl;
 
