@@ -66,11 +66,11 @@ public:
     void calculateStats(int& totalProbes, int& maxProbes) {
         totalProbes = 0;
         maxProbes = 0;
-        calculateProbes(root, totalProbes, maxProbes, 1); // Start from 1
+        calculateProbes(root, totalProbes, maxProbes, 1);
     }
 
     void traverseAndWrite(std::ofstream& outputFile) {
-        writeTraverseInOrder(root, outputFile, 1); // Start from 1
+        writeTraverseInOrder(root, outputFile, 1);
     }
 
     int getUniqueWordCount() const {
@@ -134,8 +134,8 @@ int main() {
         return 1;
     }
 
-    const char* inputFiles[] = {"../data/textfile1.txt", "../data/textfile2.txt"};
-    const int numFiles = 2;
+    const char* inputFiles[] = {"../data/textfile1.txt", "../data/textfile2.txt", "../data/textfile3.txt", "../data/textfile4.txt"};
+    const int numFiles = 4;
 
     outputFile << "bdominiq" << std::endl;
 
