@@ -1,15 +1,25 @@
 #include <iostream>
 #include <fstream>
-#include <string>
-#include <algorithm>
 
 struct TreeNode {
-    std::string word;
+    char* word;
     int count;
     TreeNode* left;
     TreeNode* right;
 
-    TreeNode(const std::string& w) : word(w), count(1), left(nullptr), right(nullptr) {}
+    TreeNode(const char* w) : count(1), left(nullptr), right(nullptr) {
+        int len = 0;
+        const char* temp = w;
+        while (*temp++) len++;
+        word = new char[len + 1];
+        for (int i = 0; i <= len; ++i) {
+            word[i] = std::tolower(w[i]);
+        }
+    }
+
+    ~TreeNode() {
+        delete[] word;
+    }
 };
 
 class BST {
@@ -21,7 +31,8 @@ private:
         if (node == nullptr) return;
         calculateProbes(node->left, totalProbes, maxProbes, currentProbe + 1);
         totalProbes += currentProbe;
-        maxProbes = std::max(maxProbes, currentProbe);
+        if (currentProbe > maxProbes)
+            maxProbes = currentProbe;
         calculateProbes(node->right, totalProbes, maxProbes, currentProbe + 1);
     }
 
@@ -35,12 +46,13 @@ private:
 public:
     BST() : root(nullptr), uniqueWordCount(0) {}
 
-    void insert(const std::string& word) {
+    void insert(const char* word) {
         TreeNode** current = &root;
         while (*current != nullptr) {
-            if (word < (*current)->word) {
+            int cmp = compareStrings(word, (*current)->word);
+            if (cmp < 0) {
                 current = &((*current)->left);
-            } else if (word > (*current)->word) {
+            } else if (cmp > 0) {
                 current = &((*current)->right);
             } else {
                 (*current)->count++;
@@ -80,7 +92,40 @@ private:
         clear(node->right);
         delete node;
     }
+
+    int compareStrings(const char* str1, const char* str2) {
+        while (*str1 && std::tolower(*str1) == std::tolower(*str2)) {
+            ++str1;
+            ++str2;
+        }
+        return std::tolower(*str1) - std::tolower(*str2);
+    }
 };
+
+bool isDelimiter(char ch, const char* delim) {
+    while (*delim) {
+        if (ch == *delim++)
+            return true;
+    }
+    return false;
+}
+
+char* my_strtok(char* str, const char* delim, char** saveptr) {
+    if (!str && !(*saveptr))
+        return nullptr;
+    char* token;
+    if (str)
+        *saveptr = str;
+    token = *saveptr;
+    while (**saveptr && !isDelimiter(**saveptr, delim))
+        ++(*saveptr);
+    if (**saveptr) {
+        **saveptr = '\0';
+        ++(*saveptr);
+    } else
+        *saveptr = nullptr;
+    return token;
+}
 
 int main() {
     std::ofstream outputFile("output.txt");
@@ -102,21 +147,13 @@ int main() {
         }
 
         BST bst;
-        std::string line;
-        while (std::getline(inFile, line)) {
-            std::string word;
-            int start = 0;
-            for (int i = 0; i <= line.size(); ++i) {
-                if (i == line.size() || !std::isalnum(line[i])) {
-                    if (i > start) {
-                        word = line.substr(start, i - start);
-                        for (char& c : word) {
-                            c = std::tolower(c);
-                        }
-                        bst.insert(word);
-                    }
-                    start = i + 1;
-                }
+        char line[1024];
+        char* context = nullptr;
+        while (inFile.getline(line, 1024)) {
+            char* word = my_strtok(line, " ,.-", &context);
+            while (word != nullptr) {
+                bst.insert(word);
+                word = my_strtok(nullptr, " ,.-", &context);
             }
         }
 
