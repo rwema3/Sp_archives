@@ -1,6 +1,9 @@
 #include <iostream>
 #include <fstream>
 
+bool isDelimiter(char ch, const char* delim);
+bool isApostropheS(char ch, char* nextChar);
+
 struct TreeNode {
     char* word;
     int count;
@@ -66,11 +69,11 @@ public:
     void calculateStats(int& totalProbes, int& maxProbes) {
         totalProbes = 0;
         maxProbes = 0;
-        calculateProbes(root, totalProbes, maxProbes, 1);
+        calculateProbes(root, totalProbes, maxProbes, 1); // Start from 1
     }
 
     void traverseAndWrite(std::ofstream& outputFile) {
-        writeTraverseInOrder(root, outputFile, 1);
+        writeTraverseInOrder(root, outputFile, 1); // Start from 1
     }
 
     int getUniqueWordCount() const {
@@ -102,29 +105,13 @@ private:
     }
 };
 
+char* my_strtok(char* str, const char* delim, char** saveptr);
 bool isDelimiter(char ch, const char* delim) {
     while (*delim) {
         if (ch == *delim++)
             return true;
     }
     return false;
-}
-
-char* my_strtok(char* str, const char* delim, char** saveptr) {
-    if (!str && !(*saveptr))
-        return nullptr;
-    char* token;
-    if (str)
-        *saveptr = str;
-    token = *saveptr;
-    while (**saveptr && !isDelimiter(**saveptr, delim))
-        ++(*saveptr);
-    if (**saveptr) {
-        **saveptr = '\0';
-        ++(*saveptr);
-    } else
-        *saveptr = nullptr;
-    return token;
 }
 
 int main() {
@@ -134,8 +121,8 @@ int main() {
         return 1;
     }
 
-    const char* inputFiles[] = {"../data/textfile1.txt", "../data/textfile2.txt", "../data/textfile3.txt", "../data/textfile4.txt"};
-    const int numFiles = 4;
+    const char* inputFiles[] = {"../data/textfile1.txt", "../data/textfile2.txt" , "../data/textfile3.txt" , "../data/textfile4.txt", "../data/textfile5.txt", "../data/textfile6.txt", "../data/textfile6.txt", "../data/textfile7.txt", "../data/textfile8.txt", "../data/textfile9.txt" , "../data/textfile10.txt"};
+    const int numFiles = 10;
 
     outputFile << "bdominiq" << std::endl;
 
@@ -173,4 +160,27 @@ int main() {
 
     outputFile.close();
     return 0;
+}
+
+char* my_strtok(char* str, const char* delim, char** saveptr) {
+    if (!str && !(*saveptr))
+        return nullptr;
+    char* token;
+    if (str)
+        *saveptr = str;
+    token = *saveptr;
+    while (**saveptr && (isDelimiter(**saveptr, delim) || isApostropheS(**saveptr, *saveptr + 1)))
+        ++(*saveptr);
+    while (**saveptr && !isDelimiter(**saveptr, delim))
+        ++(*saveptr);
+    if (**saveptr) {
+        **saveptr = '\0';
+        ++(*saveptr);
+    } else
+        *saveptr = nullptr;
+    return token;
+}
+
+bool isApostropheS(char ch, char* nextChar) {
+    return (ch == '\'') && (*nextChar == 's' || *nextChar == 'S');
 }
