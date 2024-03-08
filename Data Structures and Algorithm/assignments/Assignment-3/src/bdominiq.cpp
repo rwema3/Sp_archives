@@ -1,6 +1,6 @@
 /*
 AUTHOR: Bagirishya Rwema Dominique
- andrewID: bdominiq
+AndrewID: bdominiq
 
 Functionality of the program:
 
