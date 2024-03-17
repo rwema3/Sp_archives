@@ -28,7 +28,7 @@ int main(int argc, char** argv) {
 
 	auto start = std::chrono::high_resolution_clock::now();
 
-	if (strcmp(argv[1], "testCodeGeneration") == 1){
+	if (strcmp(argv[1], "testCodeGeneration") == 0){
 		/**
 		 * When you initiate a memory call, always check that the memory was allotted
 		 * If not, throw an error, or send an error message.
@@ -48,7 +48,7 @@ int main(int argc, char** argv) {
 
 		HuffmanEncoding::generateAlphabetCode(inputTrainFilePath, outputHuffmanCodePath);
 	}
-	if (strcmp(argv[1], "testEncoding") == 1){
+	if (strcmp(argv[1], "testEncoding") == 0){
 		char testASCIIFilePath[1024], huffmanCodeFilePath[1024], outFile[1024];
 		sprintf(testASCIIFilePath, "%s", argv[2]);
 		sprintf(huffmanCodeFilePath, "%s", argv[3]);
@@ -56,13 +56,13 @@ int main(int argc, char** argv) {
 
 		HuffmanEncoding::encodeText(testASCIIFilePath, huffmanCodeFilePath, outFile);
 	}
-	if (strcmp(argv[1], "testDecoding") == 1){
+	if (strcmp(argv[1], "testDecoding") == 0){
 		char testEncodedFilePath[1024], huffmanCodeFilePath[1024], outFile[1024];
 		sprintf(testEncodedFilePath, "%s", argv[2]);
 		sprintf(huffmanCodeFilePath, "%s", argv[3]);
 		sprintf(outFile, "%s.ascii.txt", testEncodedFilePath);
 
-		HuffmanEncoding::encodeText(testEncodedFilePath, huffmanCodeFilePath, outFile);
+		HuffmanEncoding::decodeText(testEncodedFilePath, huffmanCodeFilePath, outFile);
 	}
 	auto stop = std::chrono::high_resolution_clock::now();
 
