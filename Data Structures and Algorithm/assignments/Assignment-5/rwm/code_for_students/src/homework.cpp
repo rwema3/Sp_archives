@@ -27,8 +27,8 @@ int main(int argc, char** argv) {
 	sprintf(inputPath, "%s", argv[1]);
 	sprintf(outputPath, "%s", argv[2]);
 	int topN = atoi(argv[3]);
-
 	IPAddressAnalyzer::getMostFrequentIPAddress(inputPath, outputPath, topN);
+
 
 	auto stop = std::chrono::high_resolution_clock::now();
 

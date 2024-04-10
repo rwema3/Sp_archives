@@ -244,8 +244,7 @@ CMakeFiles/homework.dir/src/IPAddressAnalyze.cpp.o: ../src/IPAddressAnalyze.cpp 
   /usr/include/c++/11/bits/stl_bvector.h \
   /usr/include/c++/11/bits/vector.tcc \
   /usr/include/c++/11/cassert \
-  /usr/include/assert.h \
-  /usr/include/c++/11/cstring
+  /usr/include/assert.h
 
 CMakeFiles/homework.dir/src/homework.cpp.o: ../src/homework.cpp \
   /usr/include/stdc-predef.h \
@@ -743,8 +742,6 @@ CMakeFiles/homework.dir/src/util/LogManager.cpp.o: ../src/util/LogManager.cpp \
 /usr/include/c++/11/bits/parse_numbers.h:
 
 /usr/include/c++/11/ratio:
-
-/usr/include/c++/11/cstring:
 
 /usr/include/c++/11/bits/vector.tcc:
 
