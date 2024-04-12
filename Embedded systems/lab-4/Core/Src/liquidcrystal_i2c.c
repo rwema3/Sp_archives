@@ -1,6 +1,6 @@
 #include "liquidcrystal_i2c.h"
 
-extern I2C_HandleTypeDef hi2c1;
+extern I2C_HandleTypeDef hi2c2;
 
 uint8_t dpFunction;
 uint8_t dpControl;
@@ -256,7 +256,7 @@ static void Write4Bits(uint8_t value)
 static void ExpanderWrite(uint8_t _data)
 {
   uint8_t data = _data | dpBacklight;
-  HAL_I2C_Master_Transmit(&hi2c1, DEVICE_ADDR, (uint8_t*)&data, 1, 10);
+  HAL_I2C_Master_Transmit(&hi2c2, DEVICE_ADDR, (uint8_t*)&data, 1, 10);
 }
 
 static void PulseEnable(uint8_t _data)

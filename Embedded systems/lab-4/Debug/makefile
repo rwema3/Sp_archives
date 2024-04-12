@@ -34,34 +34,34 @@ $(wildcard ../makefile.init) \
 $(wildcard ../makefile.targets) \
 
 
-BUILD_ARTIFACT_NAME := sensors_LCD
+BUILD_ARTIFACT_NAME := final_project_r
 BUILD_ARTIFACT_EXTENSION := elf
 BUILD_ARTIFACT_PREFIX :=
 BUILD_ARTIFACT := $(BUILD_ARTIFACT_PREFIX)$(BUILD_ARTIFACT_NAME)$(if $(BUILD_ARTIFACT_EXTENSION),.$(BUILD_ARTIFACT_EXTENSION),)
 
 # Add inputs and outputs from these tool invocations to the build variables 
 EXECUTABLES += \
-sensors_LCD.elf \
+final_project_r.elf \
 
 MAP_FILES += \
-sensors_LCD.map \
+final_project_r.map \
 
 SIZE_OUTPUT += \
 default.size.stdout \
 
 OBJDUMP_LIST += \
-sensors_LCD.list \
+final_project_r.list \
 
 
 # All Target
 all: main-build
 
 # Main-build Target
-main-build: sensors_LCD.elf secondary-outputs
+main-build: final_project_r.elf secondary-outputs
 
 # Tool invocations
-sensors_LCD.elf sensors_LCD.map: $(OBJS) $(USER_OBJS) D:\WorksGt\1.New\lab-3-embedded_sys_jniringi_dieudoni\STM32F103RBTX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "sensors_LCD.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m3 -T"D:\WorksGt\1.New\lab-3-embedded_sys_jniringi_dieudoni\STM32F103RBTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="sensors_LCD.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+final_project_r.elf final_project_r.map: $(OBJS) $(USER_OBJS) B:\program\ courses\Semester\ 2\embedded\ systems\ development\Labs\Lab4\final_project_r\STM32F103RBHX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "final_project_r.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m3 -T"B:\program courses\Semester 2\embedded systems development\Labs\Lab4\final_project_r\STM32F103RBHX_FLASH.ld" --specs=nosys.specs -Wl,-Map="final_project_r.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 
@@ -70,14 +70,14 @@ default.size.stdout: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
 	@echo 'Finished building: $@'
 	@echo ' '
 
-sensors_LCD.list: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-objdump -h -S $(EXECUTABLES) > "sensors_LCD.list"
+final_project_r.list: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-objdump -h -S $(EXECUTABLES) > "final_project_r.list"
 	@echo 'Finished building: $@'
 	@echo ' '
 
 # Other Targets
 clean:
-	-$(RM) default.size.stdout sensors_LCD.elf sensors_LCD.list sensors_LCD.map
+	-$(RM) default.size.stdout final_project_r.elf final_project_r.list final_project_r.map
 	-@echo ' '
 
 secondary-outputs: $(SIZE_OUTPUT) $(OBJDUMP_LIST)
