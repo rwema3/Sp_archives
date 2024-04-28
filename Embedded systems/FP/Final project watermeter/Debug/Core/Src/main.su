@@ -1,0 +1,12 @@
+../Core/Src/main.c:78:5:main	8	static
+../Core/Src/main.c:165:6:SystemClock_Config	72	static
+../Core/Src/main.c:202:13:MX_I2C2_Init	8	static
+../Core/Src/main.c:236:13:MX_TIM2_Init	64	static
+../Core/Src/main.c:295:13:MX_GPIO_Init	32	static
+../Core/Src/main.c:341:6:displayEachNumber	16	static
+../Core/Src/main.c:351:5:calculate_angle	16	static
+../Core/Src/main.c:366:6:move_servo	16	static
+../Core/Src/main.c:378:6:clear_input_buffer	16	static
+../Core/Src/main.c:388:6:HAL_TIM_PeriodElapsedCallback	16	static
+../Core/Src/main.c:397:6:HAL_GPIO_EXTI_Callback	24	static
+../Core/Src/main.c:573:6:Error_Handler	4	static,ignoring_inline_asm
