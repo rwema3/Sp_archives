@@ -8,8 +8,8 @@ LiquidCrystal_I2C lcd(0x27,16,2);
 #define LED_BUILTIN 16
 #define SENSOR  4
 const int Relay_Enable=25;
-char* ssid = "Rwema";
-char* password = "rwema123!";
+char* ssid = "datum";
+char* password = "datadata";
 float litres;
 float availableLitter =0;
 long currentMillis = 0;
@@ -52,7 +52,7 @@ void setup()
   lcd.setCursor(1,1);
   lcd.print("SMART METER");
   Serial.println("Starting...");
-  delay(3000); //delay for 3 seconds to make sure the modules get the signal
+  delay(300); //delay for 3 seconds to make sure the modules get the signal
   Serial.println("Mobile Water");
   delay(3000);
   Serial.println("Liter:");
@@ -115,7 +115,7 @@ void loop()
         pinMode(Relay_Enable,INPUT_PULLUP);
       lcd.println("OFF");
       currentLiter=0.0;
-      Serial.println("Your Smart water meter is off");
+      Serial.println("OFF");
     }
 
 //------------------------------End of codes of Relay --------------------------------------------
@@ -177,7 +177,7 @@ void requestingLiter()
 {
   // Serve the data as plain text, for example
    HTTPClient http;    //Declare object of class HTTPClient
-String id = "1";
+String id = "3";
  
 String postData = "id=" + id; 
    
@@ -202,7 +202,7 @@ String postData = "id=" + id;
       digitalWrite(Relay_Enable,LOW);
       litres=0.0;
       lcd.setCursor(4,1);
-      lcd.println("Your Smart water meter is off");
+      lcd.println("OFF");
     }
 
 
@@ -221,7 +221,7 @@ void updatingToDb()
 {
   // Serve the data as plain text, for example
    HTTPClient http;    //Declare object of class HTTPClient
-  String id = "3";
+  String id = "4";
   
 float liter = Serial.parseFloat();
 String postData = "id=" + id + "&liter=" + currentLiter; 
