@@ -1,4 +1,0 @@
-D:/WorksGt/Spring-semester-2024/Data Structures and Algorithm/assignments/Ntest/cmake-build-debug/CMakeFiles/Ntest.dir
-D:/WorksGt/Spring-semester-2024/Data Structures and Algorithm/assignments/Ntest/cmake-build-debug/CMakeFiles/main.dir
-D:/WorksGt/Spring-semester-2024/Data Structures and Algorithm/assignments/Ntest/cmake-build-debug/CMakeFiles/edit_cache.dir
-D:/WorksGt/Spring-semester-2024/Data Structures and Algorithm/assignments/Ntest/cmake-build-debug/CMakeFiles/rebuild_cache.dir

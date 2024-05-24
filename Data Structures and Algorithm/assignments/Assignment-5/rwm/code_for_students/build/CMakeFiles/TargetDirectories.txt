@@ -1,3 +1,0 @@
-/mnt/d/rwm/code_for_students/build/CMakeFiles/homework.dir
-/mnt/d/rwm/code_for_students/build/CMakeFiles/edit_cache.dir
-/mnt/d/rwm/code_for_students/build/CMakeFiles/rebuild_cache.dir

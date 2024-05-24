@@ -1,4 +1,0 @@
-D:/WorksGt/Spring-semester-2024/Data Structures and Algorithm/assignments/Assignment-2/cmake-build-debug/CMakeFiles/Assignment_2.dir
-D:/WorksGt/Spring-semester-2024/Data Structures and Algorithm/assignments/Assignment-2/cmake-build-debug/CMakeFiles/bdominiq.dir
-D:/WorksGt/Spring-semester-2024/Data Structures and Algorithm/assignments/Assignment-2/cmake-build-debug/CMakeFiles/edit_cache.dir
-D:/WorksGt/Spring-semester-2024/Data Structures and Algorithm/assignments/Assignment-2/cmake-build-debug/CMakeFiles/rebuild_cache.dir
